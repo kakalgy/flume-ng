@@ -1,7 +1,7 @@
 package com.flume.core.lifecycle;
 
 import com.flume.annotations.InterfaceAudience;
-import com.flume.annotations.InterfaceStability;;
+import com.flume.annotations.InterfaceStability;
 
 /**
  * <p>

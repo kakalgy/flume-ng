@@ -130,9 +130,9 @@ public class LifecycleSupervisor implements LifecycleAware {
 		logger.debug("Lifecycle supervisor stopped");
 	}
 
-	public LifecycleState getLifecycleState() {
+	public synchronized LifecycleState getLifecycleState() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.lifecycleState;
 	}
 
 	/**
@@ -142,6 +142,12 @@ public class LifecycleSupervisor implements LifecycleAware {
 		lifecycleState = LifecycleState.ERROR;
 	}
 
+	/**
+	 * 
+	 * @param lifecycleAware
+	 * @param policy
+	 * @param desiredState
+	 */
 	public synchronized void supervise(LifecycleAware lifecycleAware, SupervisorPolicy policy, LifecycleState desiredState) {
 		if (this.monitorService.isShutdown() || this.monitorService.isTerminated() || this.monitorService.isTerminating()) {
 			throw new FlumeException("Supervise called on " + lifecycleAware + " " + "after shutdown has been initiated. " + lifecycleAware
@@ -161,8 +167,59 @@ public class LifecycleSupervisor implements LifecycleAware {
 		process.policy = policy;
 		process.status.desiredState = desiredState;
 		process.status.error = false;
-		
-		Monitor
+
+		MonitorRunnable monitorRunnable = new MonitorRunnable();
+		monitorRunnable.lifecycleAware = lifecycleAware;
+		monitorRunnable.supervisoree = process;
+		monitorRunnable.monitorService = monitorService;
+
+		supervisedProcesses.put(lifecycleAware, process);
+
+		ScheduledFuture<?> future = monitorService.scheduleWithFixedDelay(monitorRunnable, 0, 3, TimeUnit.SECONDS);
+		monitorFurures.put(lifecycleAware, future);
+	}
+
+	public synchronized void unsupervise(LifecycleAware lifecycleAware) {
+		Preconditions.checkState(supervisedProcesses.containsKey(lifecycleAware),
+				"Unaware of " + lifecycleAware + " - can not unsupervise");
+
+		logger.debug("Unsupervising service:{}", lifecycleAware);
+
+		synchronized (lifecycleAware) {
+			Supervisoree supervisoree = supervisedProcesses.get(lifecycleAware);
+			supervisoree.status.discard = true;
+			this.setDesiredState(lifecycleAware, LifecycleState.STOP);
+			logger.info("Stopping component: {}", lifecycleAware);
+			lifecycleAware.stop();
+		}
+
+		supervisedProcesses.remove(lifecycleAware);
+		// We need to do this because a reconfiguration simply unsupervises old
+		// components and supervises new ones.
+		monitorFurures.get(lifecycleAware).cancel(false);
+		// purges are expensive, so it is done only once every 2 hours.
+		needToPurger = true;
+		monitorFurures.remove(lifecycleAware);
+	}
+
+	public synchronized void setDesiredState(LifecycleAware lifecycleAware, LifecycleState desiredState) {
+		Preconditions.checkState(supervisedProcesses.containsKey(lifecycleAware),
+				"Unaware of " + lifecycleAware + " - can not set desired state to " + desiredState);
+
+		logger.debug("Setting desiredState:{} on service:{}", desiredState, lifecycleAware);
+
+		Supervisoree supervisoree = supervisedProcesses.get(lifecycleAware);
+		supervisoree.status.desiredState = desiredState;
+	}
+
+	/**
+	 * 返回LifecycleAware对象 是否是错误状态
+	 * 
+	 * @param compnent
+	 * @return
+	 */
+	public synchronized boolean isComponentInErrorState(LifecycleAware compnent) {
+		return supervisedProcesses.get(compnent).status.error;
 	}
 
 	/**
@@ -321,7 +378,7 @@ public class LifecycleSupervisor implements LifecycleAware {
 								lifecycleAware.stop();
 							} catch (Throwable t) {
 								// TODO: handle exception
-								logger.error("Unable to stop " + lifecycleAware + " - Exception follows.", e);
+								logger.error("Unable to stop " + lifecycleAware + " - Exception follows.", t);
 								if (t instanceof Error) {
 									throw (Error) t;
 								}
