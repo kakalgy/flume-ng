@@ -1,6 +1,6 @@
 package com.flume.configuration.conf;
 
-public class FlumeConfigurarionError {
+public class FlumeConfigurationError {
 
 	private String componentName;
 	private String key;
@@ -13,7 +13,7 @@ public class FlumeConfigurarionError {
 	 * Component which had an error, specific key in error(which can be null)
 	 * </p>
 	 */
-	public FlumeConfigurarionError(String componentName, String key, FlumeConfigurationErrorType errorType, ErrorOrWarning error) {
+	public FlumeConfigurationError(String componentName, String key, FlumeConfigurationErrorType errorType, ErrorOrWarning error) {
 		// TODO Auto-generated constructor stub
 		this.error = error;
 		if (componentName != null) {

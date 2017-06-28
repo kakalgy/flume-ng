@@ -1,6 +1,10 @@
 package com.flume.configuration.conf;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import com.flume.configuration.Context;
+import com.flume.configuration.conf.FlumeConfigurationError.ErrorOrWarning;
 
 /**
  *
@@ -17,8 +21,44 @@ public abstract class ComponentConfiguration {
 
 	private String type;
 	protected boolean configured;
-	protected List<FlumeConfigurarionError> errors;
+	protected List<FlumeConfigurationError> errors;
 	private boolean notFoundConfigClass;
+
+	protected ComponentConfiguration(String componentName) {
+		// TODO Auto-generated constructor stub
+		this.componentName = componentName;
+		errors = new LinkedList<FlumeConfigurationError>();
+		this.type = null;
+		this.configured = false;
+	}
+
+	public void configure(Context context) throws ConfigurationException {
+		failIfConfigured();
+
+		String confType = context.getString(BasicConfigurationConstants.CONFIG_TYPE);
+
+		if (confType != null && !confType.isEmpty()) {
+			this.type = confType;
+		}
+		// Type can be set by child class constructors, so check if it was.
+		if (this.type == null || this.type.isEmpty()) {
+			errors.add(new FlumeConfigurationError(componentName, BasicConfigurationConstants.CONFIG_TYPE,
+					FlumeConfigurationErrorType.ATTRS_MISSING, ErrorOrWarning.ERROR));
+
+			throw new ConfigurationException("Component has no type. Cannot configure. " + componentName);
+		}
+	}
+
+	/**
+	 * 当配置Component时发现configured属性为true，则认为已配置过，抛出异常
+	 * 
+	 * @throws ConfigurationException
+	 */
+	protected void failIfConfigured() throws ConfigurationException {
+		if (this.configured) {
+			throw new ConfigurationException("Already configured component." + componentName);
+		}
+	}
 
 	/**
 	 * 枚举，组件类型
@@ -27,8 +67,8 @@ public abstract class ComponentConfiguration {
 	 *
 	 */
 	public enum ComponentType {
-		OTHER(null), SOURCE("Source"), SINK("Sink"), SINK_PROCESSOR("SinkProcessor"), SINKGROUP("Sinkgroup"), CHANNEL("Channel"), CHANNELSELECTOR(
-				"ChannelSelector");
+		OTHER(null), SOURCE("Source"), SINK("Sink"), SINK_PROCESSOR("SinkProcessor"), SINKGROUP("Sinkgroup"), CHANNEL(
+				"Channel"), CHANNELSELECTOR("ChannelSelector");
 
 		private final String componentType;
 
@@ -43,5 +83,48 @@ public abstract class ComponentConfiguration {
 		public String getComponentType() {
 			return componentType;
 		}
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
+	
+	public String toString(int indentCount){
+		StringBuilder indentSb = new StringBuilder("");
+		
+		for(int i = 0;i<indentCount;i++){
+			indentSb.append(Fl)
+		}
+	}
+	
+	/********************* Get/Set方法 **************************/
+	public boolean isNotFoundConfigClass() {
+		return notFoundConfigClass;
+	}
+
+	public void setNotFoundConfigClass(boolean notFoundConfigClass) {
+		this.notFoundConfigClass = notFoundConfigClass;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public List<FlumeConfigurationError> getErrors() {
+		return errors;
+	}
+
+	public String getComponentName() {
+		return componentName;
+	}
+
+	public void setConfigured() {
+		this.configured = true;
 	}
 }
