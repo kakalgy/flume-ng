@@ -1,6 +1,10 @@
 package com.flume.configuration.conf;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.flume.configuration.Context;
+import com.flume.configuration.conf.FlumeConfigurationError.ErrorOrWarning;
 
 /**
  * <p>
@@ -24,16 +29,36 @@ import com.flume.configuration.Context;
  *
  */
 public class FlumeConfiguration {
-	
-	private static final Logger logger = LoggerFactory.getLogger(FlumeConfiguration.class);
-	
-	
 
+	private static final Logger logger = LoggerFactory.getLogger(FlumeConfiguration.class);
+	/**
+	 * 
+	 */
+	private final Map<String, AgentConfiguration> agentConfigMap;
+	private final LinkedList<FlumeConfigurationError> errors;
+	/**
+	 * 换行符，首先是找系统属性中是否有line.separator，若没有的话默认返回\n
+	 */
+	public static final String NEWLINE = System.getProperty("line.separator", "\n");
+	/**
+	 * 缩进(2个空格)
+	 */
+	public static final String INDENTSTEP = "  ";
+
+	/**
+	 * Agent配置
+	 * 
+	 * @author Administrator
+	 *
+	 */
 	public static class AgentConfiguration {
 		private final String agentName;
 
 		private String sources;
 		private String sinks;
+		/**
+		 * channel的集合，每个channel之间是空白字符作为分隔符
+		 */
 		private String channels;
 		private String sinkgroups;
 
@@ -91,7 +116,49 @@ public class FlumeConfiguration {
 		 * @return true if the configuration is valid, false otherwise
 		 */
 		private boolean isValid() {
+			logger.debug("Starting validation of configuration for agent: {}", agentName);
 
+			if (logger.isDebugEnabled() && LogPrivacyUtil.allowLogPrintConfig()) {
+				logger.debug("Initial configuration: {}", this.getPrevalidationConfig());
+			}
+
+			// Make sure that at least one channel is specified
+			if (channels == null || channels.trim().length() == 0) {
+				logger.warn("Agent configuration for '" + agentName + "' does not contain any channels. Marking it as invalid.");
+
+				errorList.add(new FlumeConfigurationError(agentName, BasicConfigurationConstants.CONFIG_CHANNELS,
+						FlumeConfigurationErrorType.PROPERTY_VALUE_NULL, ErrorOrWarning.ERROR));
+				return false;
+			}
+
+			channelSet = new HashSet<String>(Arrays.asList(channels.split("\\s+")));// \\s+用来匹配任意空白字符
+
+		}
+
+		/**
+		 * 获得组装Agent的配置信息(AgentName、Sources、Channels、Sinks)，key-value的形式b
+		 * 
+		 * @return
+		 */
+		public String getPrevalidationConfig() {
+			StringBuilder sb = new StringBuilder("AgentConfiguration[");
+			sb.append(agentName).append("]").append(NEWLINE).append("SOURCES: ");
+			sb.append(sourceContextMap).append(NEWLINE).append("CHANNELS: ");
+			sb.append(channelContextMap).append(NEWLINE).append("SINKS: ");
+			sb.append(sinkContextMap).append(NEWLINE);
+
+			return sb.toString();
+		}
+
+		/**
+		 * If it is a known component it will do the full validation required
+		 * for that component, else it will do the validation required for that
+		 * class.
+		 */
+		private Set<String> validateChannels(Set<String> channelSet) {
+			Iterator<String> iter = channelSet.iterator();
+			Map<String, Context> newContextMap = new HashMap<String, Context>();
+			channelc
 		}
 
 		/**************************** Get/Set方法 ****************************************/

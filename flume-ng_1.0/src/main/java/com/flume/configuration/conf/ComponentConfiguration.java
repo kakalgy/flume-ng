@@ -42,8 +42,8 @@ public abstract class ComponentConfiguration {
 		}
 		// Type can be set by child class constructors, so check if it was.
 		if (this.type == null || this.type.isEmpty()) {
-			errors.add(new FlumeConfigurationError(componentName, BasicConfigurationConstants.CONFIG_TYPE, FlumeConfigurationErrorType.ATTRS_MISSING,
-					ErrorOrWarning.ERROR));
+			errors.add(new FlumeConfigurationError(componentName, BasicConfigurationConstants.CONFIG_TYPE,
+					FlumeConfigurationErrorType.ATTRS_MISSING, ErrorOrWarning.ERROR));
 
 			throw new ConfigurationException("Component has no type. Cannot configure. " + componentName);
 		}
@@ -67,8 +67,8 @@ public abstract class ComponentConfiguration {
 	 *
 	 */
 	public enum ComponentType {
-		OTHER(null), SOURCE("Source"), SINK("Sink"), SINK_PROCESSOR("SinkProcessor"), SINKGROUP("Sinkgroup"), CHANNEL("Channel"), CHANNELSELECTOR(
-				"ChannelSelector");
+		OTHER(null), SOURCE("Source"), SINK("Sink"), SINK_PROCESSOR("SinkProcessor"), SINKGROUP("Sinkgroup"), CHANNEL(
+				"Channel"), CHANNELSELECTOR("ChannelSelector");
 
 		private final String componentType;
 
@@ -109,8 +109,8 @@ public abstract class ComponentConfiguration {
 		return notFoundConfigClass;
 	}
 
-	public void setNotFoundConfigClass(boolean notFoundConfigClass) {
-		this.notFoundConfigClass = notFoundConfigClass;
+	public void setNotFoundConfigClass() {
+		this.notFoundConfigClass = true;
 	}
 
 	public String getType() {
