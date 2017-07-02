@@ -2,17 +2,20 @@ package com.flume.configuration.conf.source;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import com.flume.configuration.Context;
 import com.flume.configuration.conf.BasicConfigurationConstants;
 import com.flume.configuration.conf.ComponentConfiguration;
+import com.flume.configuration.conf.ComponentConfigurationFactory;
 import com.flume.configuration.conf.ConfigurationException;
 import com.flume.configuration.conf.FlumeConfiguration;
 import com.flume.configuration.conf.FlumeConfigurationError;
 import com.flume.configuration.conf.FlumeConfigurationError.ErrorOrWarning;
 import com.flume.configuration.conf.FlumeConfigurationErrorType;
+import com.flume.configuration.conf.ComponentConfiguration.ComponentType;
 import com.flume.configuration.conf.channel.ChannelSelectorConfiguration;
 import com.flume.configuration.conf.channel.ChannelSelectorConfiguration.ChannelSelectorConfigurationType;
 import com.flume.configuration.conf.channel.ChannelSelectorType;
@@ -52,10 +55,29 @@ public class SourceConfiguration extends ComponentConfiguration {
 			} else {
 				selType = ChannelSelectorConfigurationType.REPLICATING.toString();
 			}
-			
-			if(selType == null|| selType.isEmpty()){
+
+			if (selType == null || selType.isEmpty()) {
 				selType = ChannelSelectorConfigurationType.REPLICATING.toString();
 			}
+
+			ChannelSelectorType selectorType = this.getKnownChannelSelector(selType);
+			Context selectorContext = new Context();
+			selectorContext.putAll(selectorParams);
+			String config = null;
+
+			if (selectorType == null) {
+				config = selectorContext.getString(BasicConfigurationConstants.CONFIG_CONFIG);
+				if (config == null || config.isEmpty()) {
+					config = "OTHER";
+				}
+			} else {
+				config = selectorType.toString().toUpperCase(Locale.ENGLISH);
+			}
+
+			this.selectorConf = (ChannelSelectorConfiguration) ComponentConfigurationFactory
+					.create(ComponentType.CHANNELSELECTOR.getComponentType(), config, ComponentType.CHANNELSELECTOR);
+			this.selectorConf.setChannels(channels);
+			this.selectorConf.configure(selectorContext);
 
 		} catch (Exception e) {
 			errors.add(new FlumeConfigurationError(componentName, ComponentType.CHANNELSELECTOR.getComponentType(),

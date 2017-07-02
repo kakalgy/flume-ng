@@ -88,20 +88,31 @@ public abstract class ComponentConfiguration {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return super.toString();
+		return this.toString(0);
 	}
 
 	/**
+	 * ComponentConfiguration的字符串格式
 	 * 
 	 * @param indentCount
+	 *            字符串每行的缩进位数
 	 * @return
 	 */
-	public String toString(int indentCount){
+	public String toString(int indentCount) {
 		StringBuilder indentSb = new StringBuilder("");
-		
-		for(int i = 0;i<indentCount;i++){
-			indentSb.append(Fl)
+
+		for (int i = 0; i < indentCount; i++) {
+			indentSb.append(FlumeConfiguration.INDENTSTEP);
 		}
+
+		String indent = indentSb.toString();
+		StringBuilder sb = new StringBuilder(indent);
+
+		sb.append("ComponentConfiguration[").append(componentName).append("]");
+		sb.append(FlumeConfiguration.NEWLINE).append(indent).append(FlumeConfiguration.INDENTSTEP).append("CONFIG: ");
+		sb.append(FlumeConfiguration.NEWLINE).append(indent).append(FlumeConfiguration.INDENTSTEP);
+
+		return sb.toString();
 	}
 
 	/********************* Get/Set方法 **************************/

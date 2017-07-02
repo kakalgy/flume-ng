@@ -1,12 +1,14 @@
 package com.flume.configuration.conf.sink;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import com.flume.configuration.Context;
 import com.flume.configuration.conf.BasicConfigurationConstants;
 import com.flume.configuration.conf.ComponentConfiguration;
+import com.flume.configuration.conf.ComponentConfigurationFactory;
 import com.flume.configuration.conf.ConfigurationException;
 
 public class SinkGroupConfiguration extends ComponentConfiguration {
@@ -27,17 +29,23 @@ public class SinkGroupConfiguration extends ComponentConfiguration {
 		super.configure(context);
 
 		sinks = Arrays.asList(context.getString(BasicConfigurationConstants.CONFIG_SINKS).split("\\s+"));
-		// 得到 参数的副本
+		// 得到 参数SINK_PROCESSOR的副本
 		Map<String, String> params = context.getSubProperties(BasicConfigurationConstants.CONFIG_SINK_PROCESSOR_PREFIX);
-		
+
 		this.processorContext = new Context();
 		this.processorContext.putAll(params);
-		
+
 		SinkProcessorType spType = this.getKnownSinkProcessor(processorContext.getString(BasicConfigurationConstants.CONFIG_TYPE));
-		
-		if(spType != null){
-			processorConf = (SinkProcessorConfiguration)com
+
+		if (spType != null) {
+			processorConf = (SinkProcessorConfiguration) ComponentConfigurationFactory.create(this.getComponentName() + "-processor",
+					spType.toString(), ComponentType.SINK_PROCESSOR);
+			if (processorConf != null) {
+				processorConf.setSinks(new HashSet<>(sinks));
+				processorConf.configure(processorContext);
+			}
 		}
+		this.setConfigured();
 	}
 
 	/**
