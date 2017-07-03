@@ -15,7 +15,6 @@ import com.flume.configuration.conf.FlumeConfiguration;
 import com.flume.configuration.conf.FlumeConfigurationError;
 import com.flume.configuration.conf.FlumeConfigurationError.ErrorOrWarning;
 import com.flume.configuration.conf.FlumeConfigurationErrorType;
-import com.flume.configuration.conf.ComponentConfiguration.ComponentType;
 import com.flume.configuration.conf.channel.ChannelSelectorConfiguration;
 import com.flume.configuration.conf.channel.ChannelSelectorConfiguration.ChannelSelectorConfigurationType;
 import com.flume.configuration.conf.channel.ChannelSelectorType;

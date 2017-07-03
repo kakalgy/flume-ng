@@ -76,41 +76,50 @@ import com.flume.sdk.Event;
  * body: 1:2:3.4foobar5 headers: one=>1, two=>2
  * </pre>
  */
-public class RegexExtractorInterceptor implements Interceptor{
-	
+public class RegexExtractorInterceptor implements Interceptor {
+
 	private static final Logger logger = LoggerFactory.getLogger(RegexExtractorInterceptor.class);
-	
+
 	private static final String REGEX = "regex";
 	private static final String SERIALIZERS = "serializers";
-	
+
 	private final Pattern regex;
 	private final List<NameAndSerializer> serializers;
-	
-	
 
-	
+	/**
+	 * 构造函数
+	 * 
+	 * @param regex
+	 * @param serializers
+	 */
+	private RegexExtractorInterceptor(Pattern regex, List<NameAndSerializer> serializers) {
+		// TODO Auto-generated constructor stub
+		this.regex = regex;
+		this.serializers = serializers;
+	}
+
 	public void initialize() {
 		// TODO Auto-generated method stub
-		
+		// 无操作
 	}
-	
+
 	public Event intercept(Event event) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public List<Event> intercept(List<Event> events) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public void close() {
 		// TODO Auto-generated method stub
-		
+		// 无操作
 	}
-	
+
 	public static class NameAndSerializer{
 		private final String headerName;
-		private final 
+		private final Rege
 	}
 }
