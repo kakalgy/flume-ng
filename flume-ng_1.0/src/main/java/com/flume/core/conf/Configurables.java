@@ -41,6 +41,7 @@ public class Configurables {
 	}
 
 	/**
+	 * 确认配置信息context中是否包含对应keys的键，且键对应的值不能为空
 	 * 
 	 * @param context
 	 * @param keys
@@ -55,6 +56,7 @@ public class Configurables {
 	}
 
 	/**
+	 * 确认配置信息context中是否含有对应keys的键，可不包含这个key，但是如果包含的话，key对应的值必须为null，否则抛出异常
 	 * 
 	 * @param context
 	 * @param keys
