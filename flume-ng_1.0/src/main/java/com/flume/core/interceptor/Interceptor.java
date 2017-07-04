@@ -2,8 +2,8 @@ package com.flume.core.interceptor;
 
 import java.util.List;
 
-import com.flume.annotations.InterfaceAudience;
-import com.flume.annotations.InterfaceStability;
+import com.flume.core.annotations.InterfaceAudience;
+import com.flume.core.annotations.InterfaceStability;
 import com.flume.core.conf.Configurable;
 import com.flume.sdk.Event;
 

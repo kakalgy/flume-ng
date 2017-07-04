@@ -1,4 +1,4 @@
-package com.flume.annotations;
+package com.flume.core.annotations;
 
 import java.lang.annotation.Documented;
 

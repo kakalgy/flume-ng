@@ -11,5 +11,5 @@ import com.flume.core.lifecycle.LifecycleAware;
  * This is an abstract class used for instantiating(实例化) derived(衍生) classes.
  */
 public abstract class SourceRunner implements LifecycleAware {
-
+	// 未完成
 }

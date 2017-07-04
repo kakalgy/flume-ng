@@ -1,7 +1,7 @@
 package com.flume.core;
 
-import com.flume.annotations.InterfaceAudience;
-import com.flume.annotations.InterfaceStability;
+import com.flume.core.annotations.InterfaceAudience;
+import com.flume.core.annotations.InterfaceStability;
 
 /**
  * Enables a component to be tagged with a name so that it can be referred to

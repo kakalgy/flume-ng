@@ -5,6 +5,9 @@ package com.flume.core;
  * Provides the transaction boundary while accessing a channel.
  * </p>
  * <p>
+ * 当进入channel时，提供事务边界
+ * </p>
+ * <p>
  * A <tt>Transaction</tt> instance is used to encompass(围绕，包围) channel access
  * via the following idiom(惯用语法):
  * </p>

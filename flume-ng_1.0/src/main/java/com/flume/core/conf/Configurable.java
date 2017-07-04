@@ -1,8 +1,8 @@
 package com.flume.core.conf;
 
-import com.flume.annotations.InterfaceAudience;
-import com.flume.annotations.InterfaceStability;
 import com.flume.configuration.Context;
+import com.flume.core.annotations.InterfaceAudience;
+import com.flume.core.annotations.InterfaceStability;
 
 /**
  * <p>
