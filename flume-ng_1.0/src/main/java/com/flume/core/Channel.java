@@ -1,5 +1,8 @@
 package com.flume.core;
 
+import com.flume.core.annotations.InterfaceAudience;
+import com.flume.core.annotations.InterfaceStability;
+
 import com.flume.core.lifecycle.LifecycleAware;
 import com.flume.sdk.Event;
 
@@ -34,6 +37,8 @@ import com.flume.sdk.Event;
  * @see org.apache.flume.Sink
  * @see org.apache.flume.Transaction
  */
+@InterfaceAudience.Public
+@InterfaceStability.Stable
 public interface Channel extends LifecycleAware, NamedComponent {
 
 	/**
