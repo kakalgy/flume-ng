@@ -4,6 +4,7 @@ import com.flume.core.Source;
 import com.flume.core.SourceRunner;
 import com.flume.core.channel.ChannelProcessor;
 import com.flume.core.lifecycle.LifecycleState;
+import com.flume.core.source.PollableSourceRunner.Thread3;
 
 /**
  * Starts, stops, and manages {@linkplain EventDrivenSource event-driven
@@ -49,4 +50,6 @@ public class EventDrivenSourceRunner extends SourceRunner {
 		// TODO Auto-generated method stub
 		return "EventDrivenSourceRunner: { source:" + this.getSource() + " }";
 	}
+
+	
 }
