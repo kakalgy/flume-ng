@@ -62,8 +62,8 @@ public class SourceConfiguration extends ComponentConfiguration {
 			ChannelSelectorType selectorType = this.getKnownChannelSelector(selType);
 			Context selectorContext = new Context();
 			selectorContext.putAll(selectorParams);
+			
 			String config = null;
-
 			if (selectorType == null) {
 				config = selectorContext.getString(BasicConfigurationConstants.CONFIG_CONFIG);
 				if (config == null || config.isEmpty()) {

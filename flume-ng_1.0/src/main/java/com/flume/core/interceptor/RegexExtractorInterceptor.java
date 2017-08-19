@@ -120,6 +120,9 @@ public class RegexExtractorInterceptor implements Interceptor {
 		// 无操作
 	}
 
+	/**
+	 * 
+	 */
 	public Event intercept(Event event) {
 		// TODO Auto-generated method stub
 		Matcher matcher = this.regex.matcher(new String(event.getBody(), Charsets.UTF_8));
@@ -128,6 +131,7 @@ public class RegexExtractorInterceptor implements Interceptor {
 		if (matcher.find()) {
 			for (int group = 0, count = matcher.groupCount(); group < count; group++) {
 				int groupIndex = group + 1;
+				// 正则表达式和匹配的个数是一一对应的，按照匹配的先后顺序来调用对应位置的serializer配置，若serializer的个数小于正则表达式匹配的个数，则忽略剩下匹配的地方
 				if (groupIndex > this.serializers.size()) {
 					if (logger.isDebugEnabled()) {
 						logger.debug("Skipping group {} to {} due to missing serializer", group, count);
@@ -140,6 +144,7 @@ public class RegexExtractorInterceptor implements Interceptor {
 					logger.debug("Serializing {} using {}", serializer.headerName, serializer.serializer);
 				}
 
+				// 在header中，添加按照配置的serializer的headerName作为key，用序列化方法得到的字符串作为value
 				headers.put(serializer.headerName, serializer.serializer.serialize(matcher.group(groupIndex)));
 			}
 		}
@@ -168,6 +173,9 @@ public class RegexExtractorInterceptor implements Interceptor {
 
 		private Pattern regex;
 		private List<NameAndSerializer> serializerList;
+		/**
+		 * 若在配置文件中没有说明serializer的type，则默认使用RegexExtractorInterceptorPassThroughSerializer，即对匹配到的字符串不做处理
+		 */
 		private final RegexExtractorInterceptorSerializer defaultSerializer = new RegexExtractorInterceptorPassThroughSerializer();
 
 		@Override

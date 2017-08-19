@@ -23,6 +23,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 /**
+ * 进行日志流的过滤和Channel的选择及调度
+ * <p>
  * A channel processor exposes operations to put {@link Event}s into
  * {@link Channel}s. These operations will propagate a {@link ChannelException}
  * if any errors occur while attempting to write to {@code required} channels.

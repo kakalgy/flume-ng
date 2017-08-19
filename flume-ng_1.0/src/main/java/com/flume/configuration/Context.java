@@ -24,6 +24,7 @@ public class Context {
 	 */
 	public Context() {
 		// TODO Auto-generated constructor stub
+		// 在HashMap的方法外面包裹了一层synchronized
 		parameters = Collections.synchronizedMap(new HashMap<String, String>());
 	}
 
@@ -270,6 +271,5 @@ public class Context {
 	private String get(String key) {
 		return this.get(key, null);
 	}
-	
-	
+
 }

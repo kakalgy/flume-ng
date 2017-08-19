@@ -6,6 +6,8 @@ import com.flume.core.channel.ChannelProcessor;
 import com.flume.core.lifecycle.LifecycleAware;
 
 /**
+ * Source接口首先继承了LifecycleAware接口，然后只提供了ChannelProcessor的setter和getter接口，也就是说它的的所有逻辑的实现应该在LifecycleAware接口的start和stop中实现
+ * <p>
  * <p>
  * A source generates {@plainlink Event events} and calls methods on the
  * configured {@link ChannelProcessor} to persist those events into the

@@ -29,6 +29,7 @@ import com.flume.configuration.conf.source.SourceConfiguration;
 import com.flume.configuration.conf.source.SourceType;
 
 /**
+ * 需要check
  * <p>
  * FlumeConfiguration is an in memory representation of the hierarchical(分层的)
  * configuration namespace required by the ConfigurationProvider. This class is

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.flume.core.lifecycle.LifecycleAware;
+import com.flume.core.lifecycle.LifecycleSupervisor;
 
 public class Application {
 
@@ -18,6 +19,8 @@ public class Application {
 	private static final String CONF_MONITOR_PREFIX = "flume.monitoring.";
 	
 	private final List<LifecycleAware> components;
+	private final LifecycleSupervisor supervisor;
+	
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

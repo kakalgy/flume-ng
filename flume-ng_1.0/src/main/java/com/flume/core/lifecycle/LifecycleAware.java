@@ -5,6 +5,14 @@ import com.flume.core.annotations.InterfaceStability;
 
 /**
  * <p>
+ * 所有核心组件都会实现org.apache.flume.lifecycle.LifecycleAware接口：
+ * </p>
+ * <p>
+ * start方法在整个Flume启动时或者初始化组件时都会调用start方法进行组件初始化，Flume组件出现异常停止时会调用stop，getLifecycleState返回组件的生命周期状态，有IDLE,
+ * START, STOP, ERROR四个状态。
+ * </p>
+ * 
+ * <p>
  * An interface implemented by any class that has a defined, stateful,
  * lifecycle.
  * </p>

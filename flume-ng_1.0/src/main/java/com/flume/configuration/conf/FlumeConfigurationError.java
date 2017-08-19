@@ -5,7 +5,7 @@ public class FlumeConfigurationError {
 	private String componentName;
 	private String key;
 	private final FlumeConfigurationErrorType errorType;
-	private ErrorOrWarning error;
+	private ErrorOrWarning error;// 内部类，枚举类型
 
 	/**
 	 * 构造函数

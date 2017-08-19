@@ -10,6 +10,8 @@ import com.flume.configuration.Context;
 import com.flume.sdk.Event;
 
 /**
+ * 在event的header中加上一个静态的键值对
+ * <p>
  * Interceptor class that appends a static, pre-configured header to all events.
  *
  * Properties:
@@ -23,6 +25,7 @@ import com.flume.sdk.Event;
  *
  * preserveExisting: Whether to preserve an existing value for 'key' (default is
  * true)
+ * 当header中已经存在key的键值对的时候，是否需要保存原来的值，即preserveExisting为true时，不会更新已存在的key的value，当为false时，则会覆盖原有值
  * <p>
  *
  * Sample config:
@@ -45,6 +48,9 @@ public class StaticInterceptor implements Interceptor {
 
 	private static final Logger logger = LoggerFactory.getLogger(StaticInterceptor.class);
 
+	/**
+	 * 当header中已经存在key的键值对的时候，是否需要保存原来的值，即preserveExisting为true时，不会更新已存在的key的value，当为false时，则会覆盖原有值,默认为true
+	 */
 	private final boolean preserveExisting;
 	private final String key;
 	private final String value;

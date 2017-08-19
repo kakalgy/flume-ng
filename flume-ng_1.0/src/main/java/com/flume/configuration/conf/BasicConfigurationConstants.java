@@ -1,6 +1,7 @@
 package com.flume.configuration.conf;
 
 public final class BasicConfigurationConstants {
+	
 	public static final String CONFIG_SOURCES = "sources";
 	public static final String CONFIG_SOURCES_PREFIX = CONFIG_SOURCES + ".";
 	public static final String CONFIG_SOURCE_CHANNELSELECTOR_PREFIX = "selector.";

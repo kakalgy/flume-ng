@@ -3,7 +3,10 @@ package com.flume.configuration.conf.channel;
 /**
  * Enumeration of built in channel selector types available in the system.
  * <p/>
- * channel selector的类型
+ * channel selector的类型(Channel选择器的类型)
+ * <p>
+ * 默认实现是复制选择器ReplicatingChannelSelector，即把接收到的消息复制到每一个Channel；多路复用选择器MultiplexingChannelSelector会根据Event
+ * Header中的参数进行选择，以此来选择使用哪个Channel。
  */
 public enum ChannelSelectorType {
 	/**

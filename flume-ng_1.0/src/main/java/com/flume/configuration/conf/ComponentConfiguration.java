@@ -17,7 +17,7 @@ import com.flume.configuration.conf.FlumeConfigurationError.ErrorOrWarning;
  */
 public abstract class ComponentConfiguration {
 
-	protected String componentName;
+	protected String componentName;// 组件名称
 
 	private String type;
 	protected boolean configured;
@@ -105,7 +105,7 @@ public abstract class ComponentConfiguration {
 			indentSb.append(FlumeConfiguration.INDENTSTEP);
 		}
 
-		String indent = indentSb.toString();
+		String indent = indentSb.toString();// 间隔符 apend之间的缩进数量
 		StringBuilder sb = new StringBuilder(indent);
 
 		sb.append("ComponentConfiguration[").append(componentName).append("]");
